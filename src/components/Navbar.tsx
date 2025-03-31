@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
-              <Link to={"/"}><span className="text-primary font-bold text-xl">MentorMatch</span></Link>
+              <Link to={"/"}><span className="text-primary font-bold text-xl">MM</span></Link>
             </div>
             {/* Desktop navigation */}
             <div className="hidden md:ml-6 md:flex md:space-x-8">
