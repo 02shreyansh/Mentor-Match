@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Code, Award, Calendar, MessageSquare, BarChart, Shield, User } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
     const careerPaths = [
@@ -59,8 +60,8 @@ const HomePage = () => {
                         Connect with experienced seniors who have been where you want to go. Get personalized guidance to achieve your academic and career goals.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button size="lg">Find a Mentor</Button>
-                        <Button size="lg" variant="outline">Become a Mentor</Button>
+                        <Button size="lg"><Link to={"/findMentor"}>Find a Mentor</Link></Button>
+                        <Button size="lg" variant="outline"><Link to={"/becomeMentor"}>Become a Mentor</Link></Button>
                     </div>
                 </div>
                 <div className="lg:w-1/2">

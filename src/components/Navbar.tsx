@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
-              <span className="text-primary font-bold text-xl">MentorMatch</span>
+              <Link to={"/"}><span className="text-primary font-bold text-xl">MentorMatch</span></Link>
             </div>
             {/* Desktop navigation */}
             <div className="hidden md:ml-6 md:flex md:space-x-8">
@@ -51,7 +51,7 @@ const Navbar = () => {
               <Bell className="h-5 w-5" />
             </Button>
             <Button variant="outline" className="hidden lg:flex cursor-pointer"><Link to ={`/signin`}>Sign In</Link></Button>
-            <Button>Get Started</Button>
+            <Button><Link to={"/signup"}>Get Started</Link></Button>
           </div>
 
           {/* Mobile menu button */}
