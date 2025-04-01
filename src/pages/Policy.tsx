@@ -29,7 +29,7 @@ const RegulationSchema = z.object({
   description: z.string(),
   appliesTo: z.array(z.string()),
 });
-export const PrivacyPolicySchema = z.object({
+const PrivacyPolicySchema = z.object({
   version: z.string(),
   lastUpdated: z.string(),
   effectiveDate: z.string(),
@@ -345,7 +345,7 @@ const privacyPolicyData: PrivacyPolicy = {
   ]
 };
 
-const PrivacyPolicy: React.FC = () => {
+const PrivacyPolicyPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("main");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -365,16 +365,16 @@ const PrivacyPolicy: React.FC = () => {
   };
 
   // Filter sections based on search term
-  const filteredSections = searchTerm 
+  const filteredSections = searchTerm
     ? privacyPolicyData.sections.filter(
-        section => 
-          section.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          section.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          section.subsections?.some(subsection => 
-            subsection.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            subsection.content.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-      )
+      section =>
+        section.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        section.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        section.subsections?.some(subsection =>
+          subsection.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          subsection.content.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    )
     : privacyPolicyData.sections;
 
   return (
@@ -414,7 +414,7 @@ const PrivacyPolicy: React.FC = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             {searchTerm && (
-              <button 
+              <button
                 className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
                 onClick={() => setSearchTerm("")}
               >
@@ -428,6 +428,178 @@ const PrivacyPolicy: React.FC = () => {
               <TabsTrigger value="regulations">Regulations</TabsTrigger>
               <TabsTrigger value="history">Revision History</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="main" className={activeTab === "main" ? "block" : "hidden"}>
+              {/* Introduction Card */}
+              <Card className="mb-8 shadow-sm">
+                <CardHeader>
+                  <CardTitle>Our Commitment to Your Privacy</CardTitle>
+                  <CardDescription>How we protect your information on our mentorship platform</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">
+                    At the Mentorship Platform, we take your privacy seriously. This policy outlines how we collect, use,
+                    and protect your personal information as you use our service to connect with mentors and pursue your career goals.
+                    We've designed our privacy practices to be transparent and to put you in control of your information.
+                  </p>
+                  <p className="text-gray-700 mt-4">
+                    Our platform facilitates meaningful connections between mentors and mentees while respecting everyone's privacy
+                    and data rights. We only collect information that is necessary to provide our services, and we are committed
+                    to using this information responsibly and transparently.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Key Points Summary */}
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4">Key Points</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {privacyPolicyData.sections
+                    .filter(section => section.isImportant)
+                    .map(section => (
+                      <Card key={section.id} className="shadow-sm bg-white/50 hover:bg-white transition duration-200">
+                        <CardHeader className="p-4 pb-2">
+                          <CardTitle className="text-lg flex items-center gap-2">
+                            {getIconComponent(section.icon)}
+                            <span>{section.title}</span>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-2">
+                          <p className="text-sm text-gray-600">{section.summary}</p>
+                        </CardContent>
+                        <CardFooter className="p-4 pt-0">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-blue-600 hover:text-blue-800 p-0 h-auto"
+                            onClick={() => document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' })}
+                          >
+                            Read more →
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                </div>
+              </div>
+
+              <Separator className="my-8" />
+
+              {/* Detailed Sections Accordion */}
+              <div className="mb-10">
+                <h2 className="text-xl font-semibold mb-4">Full Privacy Policy</h2>
+                {searchTerm && filteredSections.length === 0 ? (
+                  <div className="bg-white p-8 rounded-lg shadow-sm text-center">
+                    <p className="text-gray-500">No sections match your search. Try different keywords.</p>
+                  </div>
+                ) : (
+                  <Accordion type="single" collapsible className="bg-white rounded-lg shadow-sm">
+                    {filteredSections.map((section) => (
+                      <AccordionItem key={section.id} value={section.id} className="border-b last:border-b-0" id={section.id}>
+                        <AccordionTrigger className="px-6 py-4 hover:bg-gray-50">
+                          <div className="flex items-center gap-3 text-left">
+                            <div className="flex-shrink-0 text-blue-600">
+                              {getIconComponent(section.icon)}
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">{section.title}</span>
+                                {section.isImportant && (
+                                  <Badge variant="default" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                                    Important
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-500 font-normal mt-1">{section.summary}</p>
+                            </div>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-6 py-4">
+                          <div className="text-gray-700 mb-4">
+                            <p>{section.content}</p>
+                          </div>
+
+                          {section.subsections && section.subsections.length > 0 && (
+                            <div className="mt-6 space-y-4">
+                              {section.subsections.map(subsection => (
+                                <div key={subsection.id} className="border-l-4 border-blue-100 pl-4 py-2">
+                                  <h4 className="font-medium text-gray-900 mb-2">{subsection.title}</h4>
+                                  <p className="text-gray-700">{subsection.content}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                )}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="regulations" className={activeTab === "regulations" ? "block" : "hidden"}>
+              <Card className="mb-8 shadow-sm">
+                <CardHeader>
+                  <CardTitle>Regulatory Compliance</CardTitle>
+                  <CardDescription>Privacy regulations that govern our data processing</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 mb-6">
+                    Our mentorship platform complies with various privacy regulations worldwide. Depending on your location,
+                    different regulations may apply to how we process your personal data. Below is information about
+                    key regulations that may affect your privacy rights.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {privacyPolicyData.regulations.map(regulation => (
+                      <Card key={regulation.id} className="border border-gray-200">
+                        <CardHeader className="bg-gray-50">
+                          <CardTitle className="text-lg">{regulation.name}</CardTitle>
+                          <CardDescription>
+                            Applies to users in: {regulation.appliesTo.join(', ')}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="pt-4">
+                          <p className="text-gray-700">{regulation.description}</p>
+                        </CardContent>
+                        <CardFooter className="bg-gray-50 border-t border-gray-200 flex justify-end">
+                          <Button variant="outline" size="sm">Learn More</Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="history" className={activeTab === "history" ? "block" : "hidden"}>
+              <Card className="mb-8 shadow-sm">
+                <CardHeader>
+                  <CardTitle>Privacy Policy Revision History</CardTitle>
+                  <CardDescription>Track how our privacy practices have evolved</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 mb-6">
+                    We believe in transparency regarding changes to our privacy practices. Below is a history of
+                    significant revisions to our privacy policy, with details about what changes were made and when.
+                  </p>
+
+                  <div className="relative border-l-2 border-gray-200 ml-4 pl-8 space-y-8">
+                    {privacyPolicyData.revisionHistory.map((revision, index) => (
+                      <div key={index} className="relative">
+                        <div className="absolute -left-10 mt-1.5 h-4 w-4 rounded-full bg-blue-500"></div>
+                        <div className="mb-2">
+                          <Badge variant="outline" className="mb-1 mr-2">{revision.version}</Badge>
+                          <span className="text-sm text-gray-500">{revision.date}</span>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                          <p className="text-gray-700">{revision.changes}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
           </Tabs>
         </div>
 
@@ -436,191 +608,17 @@ const PrivacyPolicy: React.FC = () => {
           <InfoIcon className="h-4 w-4" />
           <AlertTitle>Policy Update Notice</AlertTitle>
           <AlertDescription>
-            This privacy policy has been updated and will go into effect on {privacyPolicyData.effectiveDate}. 
+            This privacy policy has been updated and will go into effect on {privacyPolicyData.effectiveDate}.
             Please review the changes, particularly to our AI matching transparency section.
           </AlertDescription>
         </Alert>
-
-        <TabsContent value="main" className={activeTab === "main" ? "block" : "hidden"}>
-          {/* Introduction Card */}
-          <Card className="mb-8 shadow-sm">
-            <CardHeader>
-              <CardTitle>Our Commitment to Your Privacy</CardTitle>
-              <CardDescription>How we protect your information on our mentorship platform</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700">
-                At the Mentorship Platform, we take your privacy seriously. This policy outlines how we collect, use, 
-                and protect your personal information as you use our service to connect with mentors and pursue your career goals. 
-                We've designed our privacy practices to be transparent and to put you in control of your information.
-              </p>
-              <p className="text-gray-700 mt-4">
-                Our platform facilitates meaningful connections between mentors and mentees while respecting everyone's privacy 
-                and data rights. We only collect information that is necessary to provide our services, and we are committed 
-                to using this information responsibly and transparently.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Key Points Summary */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Key Points</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {privacyPolicyData.sections
-                .filter(section => section.isImportant)
-                .map(section => (
-                  <Card key={section.id} className="shadow-sm bg-white/50 hover:bg-white transition duration-200">
-                    <CardHeader className="p-4 pb-2">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        {getIconComponent(section.icon)}
-                        <span>{section.title}</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-2">
-                      <p className="text-sm text-gray-600">{section.summary}</p>
-                    </CardContent>
-                    <CardFooter className="p-4 pt-0">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-blue-600 hover:text-blue-800 p-0 h-auto"
-                        onClick={() => document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' })}
-                      >
-                        Read more →
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-            </div>
-          </div>
-
-          <Separator className="my-8" />
-
-          {/* Detailed Sections Accordion */}
-          <div className="mb-10">
-            <h2 className="text-xl font-semibold mb-4">Full Privacy Policy</h2>
-            {searchTerm && filteredSections.length === 0 ? (
-              <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-                <p className="text-gray-500">No sections match your search. Try different keywords.</p>
-              </div>
-            ) : (
-              <Accordion type="single" collapsible className="bg-white rounded-lg shadow-sm">
-                {filteredSections.map((section) => (
-                  <AccordionItem key={section.id} value={section.id} className="border-b last:border-b-0" id={section.id}>
-                    <AccordionTrigger className="px-6 py-4 hover:bg-gray-50">
-                      <div className="flex items-center gap-3 text-left">
-                        <div className="flex-shrink-0 text-blue-600">
-                          {getIconComponent(section.icon)}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">{section.title}</span>
-                            {section.isImportant && (
-                              <Badge variant="default" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-                                Important
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-500 font-normal mt-1">{section.summary}</p>
-                        </div>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-6 py-4">
-                      <div className="text-gray-700 mb-4">
-                        <p>{section.content}</p>
-                      </div>
-                      
-                      {section.subsections && section.subsections.length > 0 && (
-                        <div className="mt-6 space-y-4">
-                          {section.subsections.map(subsection => (
-                            <div key={subsection.id} className="border-l-4 border-blue-100 pl-4 py-2">
-                              <h4 className="font-medium text-gray-900 mb-2">{subsection.title}</h4>
-                              <p className="text-gray-700">{subsection.content}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            )}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="regulations" className={activeTab === "regulations" ? "block" : "hidden"}>
-          <Card className="mb-8 shadow-sm">
-            <CardHeader>
-              <CardTitle>Regulatory Compliance</CardTitle>
-              <CardDescription>Privacy regulations that govern our data processing</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 mb-6">
-                Our mentorship platform complies with various privacy regulations worldwide. Depending on your location, 
-                different regulations may apply to how we process your personal data. Below is information about 
-                key regulations that may affect your privacy rights.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {privacyPolicyData.regulations.map(regulation => (
-                  <Card key={regulation.id} className="border border-gray-200">
-                    <CardHeader className="bg-gray-50">
-                      <CardTitle className="text-lg">{regulation.name}</CardTitle>
-                      <CardDescription>
-                        Applies to users in: {regulation.appliesTo.join(', ')}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="pt-4">
-                      <p className="text-gray-700">{regulation.description}</p>
-                    </CardContent>
-                    <CardFooter className="bg-gray-50 border-t border-gray-200 flex justify-end">
-                      <Button variant="outline" size="sm">Learn More</Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="history" className={activeTab === "history" ? "block" : "hidden"}>
-          <Card className="mb-8 shadow-sm">
-            <CardHeader>
-              <CardTitle>Privacy Policy Revision History</CardTitle>
-              <CardDescription>Track how our privacy practices have evolved</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 mb-6">
-                We believe in transparency regarding changes to our privacy practices. Below is a history of 
-                significant revisions to our privacy policy, with details about what changes were made and when.
-              </p>
-              
-              <div className="relative border-l-2 border-gray-200 ml-4 pl-8 space-y-8">
-                {privacyPolicyData.revisionHistory.map((revision, index) => (
-                  <div key={index} className="relative">
-                    <div className="absolute -left-10 mt-1.5 h-4 w-4 rounded-full bg-blue-500"></div>
-                    <div className="mb-2">
-                      <Badge variant="outline" className="mb-1 mr-2">{revision.version}</Badge>
-                      <span className="text-sm text-gray-500">{revision.date}</span>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                      <p className="text-gray-700">{revision.changes}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Contact Information */}
         <Card className="mb-8 bg-gray-50 border-none shadow-sm">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2">
                 <h2 className="text-xl font-semibold mb-3">Contact Us</h2>
                 <p className="text-gray-700 mb-4">
-                  If you have any questions about our privacy practices or would like to exercise your data rights, 
+                  If you have any questions about our privacy practices or would like to exercise your data rights,
                   please contact our Privacy Team using any of the methods below:
                 </p>
                 <div className="flex flex-col space-y-2 text-gray-700">
@@ -643,23 +641,9 @@ const PrivacyPolicy: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-
-        {/* Footer */}
-        <div className="text-center space-y-4 mt-10">
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-            <a href="#" className="hover:text-blue-600">Terms of Service</a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:text-blue-600">Community Guidelines</a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:text-blue-600">Cookie Policy</a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:text-blue-600">Accessibility</a>
-          </div>
-          <p className="text-gray-500">© 2025 Mentorship Platform. All rights reserved.</p>
-        </div>
       </div>
     </div>
   );
 };
 
-export default PrivacyPolicy;
+export default PrivacyPolicyPage;

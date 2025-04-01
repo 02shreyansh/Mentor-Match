@@ -7,7 +7,7 @@ import FindMentorPage from './pages/FindMentorPage';
 import BecomeMentorPage from './pages/BecomeMentorPage';
 import ContactPage from './pages/ContactPage';
 import TermsAndServicePage from './pages/TermsAndService';
-import PrivacyPolicy from './pages/Policy';
+import PrivacyPolicyPage from './pages/Policy';
 function App() {
   return (
     <Router>
@@ -20,7 +20,7 @@ function App() {
           <Route path="becomeMentor" element={<BecomeMentorPage />} />
           <Route path="contact-us" element={<ContactPage />} />
           <Route path="terms-of-service" element={<TermsAndServicePage />} />
-          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         </Route>
       </Routes>
     </Router>
