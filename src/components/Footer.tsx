@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Column 1 - About */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold">MentorMatch</h3>
+            <h3 className="text-xl font-bold">MM</h3>
             <p className="text-gray-400">
               Connecting students with experienced mentors to help them achieve their academic and career goals.
             </p>
@@ -74,9 +74,9 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">&copy; {new Date().getFullYear()} MentorMatch. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm">Contact Us</a>
+            <a href="/privacy-policy" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+            <a href="/terms-of-service" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+            <a href="/contact-us" className="text-gray-400 hover:text-white text-sm">Contact Us</a>
           </div>
         </div>
       </div>

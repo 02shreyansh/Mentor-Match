@@ -5,6 +5,9 @@ import SignInPage from './pages/SigninPage';
 import SignupPage from './pages/SiginUp';
 import FindMentorPage from './pages/FindMentorPage';
 import BecomeMentorPage from './pages/BecomeMentorPage';
+import ContactPage from './pages/ContactPage';
+import TermsAndServicePage from './pages/TermsAndService';
+import PrivacyPolicy from './pages/Policy';
 function App() {
   return (
     <Router>
@@ -15,6 +18,9 @@ function App() {
           <Route path="signup" element={<SignupPage />} />
           <Route path="findMentor" element={<FindMentorPage />} />
           <Route path="becomeMentor" element={<BecomeMentorPage />} />
+          <Route path="contact-us" element={<ContactPage />} />
+          <Route path="terms-of-service" element={<TermsAndServicePage />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
         </Route>
       </Routes>
     </Router>
