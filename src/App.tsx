@@ -8,6 +8,7 @@ import BecomeMentorPage from './pages/BecomeMentorPage';
 import ContactPage from './pages/ContactPage';
 import TermsAndServicePage from './pages/TermsAndService';
 import PrivacyPolicyPage from './pages/Policy';
+import AdminUsersPage from './pages/Admin/Users';
 function App() {
   return (
     <Router>
@@ -21,6 +22,7 @@ function App() {
           <Route path="contact-us" element={<ContactPage />} />
           <Route path="terms-of-service" element={<TermsAndServicePage />} />
           <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="admin/users" element={<AdminUsersPage/>}/>
         </Route>
       </Routes>
     </Router>
