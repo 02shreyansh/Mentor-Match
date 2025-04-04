@@ -10,6 +10,9 @@ import TermsAndServicePage from './pages/TermsAndService';
 import PrivacyPolicyPage from './pages/Policy';
 import AdminUsersPage from './pages/Admin/Users';
 import Dashboard from './pages/Admin/Dashboard';
+import Mentorship from './pages/Admin/Mentorship';
+import Session from './pages/Admin/Session';
+import ScheduleSessionForm from './components/admin/Schedule';
 function App() {
   return (
     <Router>
@@ -25,6 +28,9 @@ function App() {
           <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="admin/users" element={<AdminUsersPage/>}/>
           <Route path='admin/dashboard' element={<Dashboard/>}/>
+          <Route path='admin/mentorships' element={<Mentorship/>}/>
+          <Route path='admin/session' element={<Session/>}/>
+          <Route path='admin/schedule' element={<ScheduleSessionForm/>}/>
         </Route>
       </Routes>
     </Router>
