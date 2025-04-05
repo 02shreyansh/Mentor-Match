@@ -13,6 +13,8 @@ import Dashboard from './pages/Admin/Dashboard';
 import Mentorship from './pages/Admin/Mentorship';
 import Session from './pages/Admin/Session';
 import ScheduleSessionForm from './components/admin/Schedule';
+import AdminForumPage from './pages/Admin/Forum';
+import AdminAchievementsPage from './pages/Admin/Achievements';
 function App() {
   return (
     <Router>
@@ -31,6 +33,8 @@ function App() {
           <Route path='admin/mentorships' element={<Mentorship/>}/>
           <Route path='admin/session' element={<Session/>}/>
           <Route path='admin/schedule' element={<ScheduleSessionForm/>}/>
+          <Route path="admin/forums" element={<AdminForumPage/>}/>
+          <Route path="admin/achievements" element={<AdminAchievementsPage/>}/>
         </Route>
       </Routes>
     </Router>
